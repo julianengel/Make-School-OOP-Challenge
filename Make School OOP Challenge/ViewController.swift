@@ -29,12 +29,21 @@ class ViewController: UIViewController {
     
     class Pet {
         
-        var name = ""
+         var name : String = ""
+        
+        
+        init( name : String, canMakeNoise : Bool )
+        {
+            
+        self.name = name
+        self.canMakeNoise = canMakeNoise
+        }
+        
         var noise : String
             {
                 return ""
         }
-        var canMakeNoise = true
+        var canMakeNoise : Bool = true
         
         func eat () {
             
@@ -63,24 +72,45 @@ class ViewController: UIViewController {
     class Human {
         
         
+        
+        static var population = 0
+        
+        class func populationCount ()
+        {
+            println("The total number of humans is: \(population)")
+            
+            
+        }
+        
+   
+        init()
+        {
+            Human.population++;
+        }
+        
         var name = ""
         
         
-        func makePetMakeNoise (animal : Pet)
+        
+        var pet:Pet = Pet(name: "", canMakeNoise: true)
+        
+        
+        
+        func makePetMakeNoise ()
         {
             var howOften  = Int(arc4random_uniform(UInt32(10)))
             for var x = 0; x < howOften; x++
             {
-                animal.makeNoise()
+                pet.makeNoise()
                 
             }
         }
         
         
-        func feedPet (animal : Pet)
+        func feedPet()
         {
             
-            animal.eat()
+            pet.eat()
             
         }
         
@@ -89,14 +119,21 @@ class ViewController: UIViewController {
     
     class Cat : Pet {
         
+        
+      
+        
+        
+   
         override var noise: String
-            {
-                return "Meow"
+        {
+                return  "Meow"
         }
+        
+
         
         override func eat() {
             
-            println(" \(name) is eating")
+            super.eat()
             println(" I'm still hungry, meow")
             
         }
@@ -105,6 +142,7 @@ class ViewController: UIViewController {
     
     
     class Dog : Pet {
+    
         
         override var noise: String
             {
@@ -118,65 +156,59 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var petOne = Cat()
+        
+        var petOne = Cat(name: "Chareles", canMakeNoise: true)
+        
+    
         
         
-        petOne.name = "Charles"
-        petOne.canMakeNoise = true
-        //        petOne.eat()
-        //        petOne.makeNoise()
+        
+        var petTwo = Cat(name: "Sotiris", canMakeNoise: false)
         
         
-        var petTwo = Cat()
         
-        petTwo.name = "Sotiris"
-        petTwo.canMakeNoise = false
-        //        petTwo.eat()
-        //        petTwo.makeNoise()
         
-        var petThree = Dog ()
+        var petThree = Dog (name: "Batman", canMakeNoise: true)
         
-        petThree.name = "Batman"
-        petThree.canMakeNoise = true
-        //        petThree.eat()
-        //        petThree.makeNoise()
+       
+       
         
         var hoooman = Human()
         
         hoooman.name = "Julian"
-        //        hoooman.makePetMakeNoise(petOne)
-        //        hoooman.feedPet(petOne)
-        
+        hoooman.pet = petOne
+     
         
         var hooman2 = Human()
         
         hooman2.name = "Jola"
-        //        hooman2.makePetMakeNoise(petThree)
-        //        hooman2.feedPet(petThree)
+        hooman2.pet = petTwo
+       
+        
         
         var hooman3 = Human()
         
         hooman3.name = "Ela"
-        //        hooman3.makePetMakeNoise(petTwo)
-        //        hooman3.feedPet(petTwo)
+        hooman3.pet = petThree
         
         
+        var creatures : [Human] = [hoooman, hooman2, hooman3]
+       
         
-        var population : [Human] = [hoooman, hooman2, hooman3]
-        var pets : [Pet] = [petOne, petTwo, petThree]
-        
-        for (index, humanAtIndex) in enumerate(population)
+        for (index, humanAtIndex) in enumerate(creatures)
         {
             
-            humanAtIndex.makePetMakeNoise(pets[index])
+            humanAtIndex.makePetMakeNoise()
             
-            humanAtIndex.feedPet(pets[index])
+            humanAtIndex.feedPet()
         }
         
         
-        println("The total number of humans is: \(population.count)")
+        var population = Human.population
+        Human.populationCount()
         
-        popLabel.text = "The total number of humans is: \(population.count)"
+        
+        popLabel.text = "The total number of humans is: \(population)"
         
         // Do any additional setup after loading the view, typically from a nib.
     }
